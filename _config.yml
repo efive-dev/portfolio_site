@@ -2,7 +2,7 @@
 # (Settings > Pages > "Deploy from a branch" > main / root). No Actions workflow needed.
 title: "Edoardo Quinto"
 description: "Portfolio"
-baseurl: "/portfolio"          # the repository name; use "" for a user site (username.github.io) or a custom domain
+baseurl: "/portfolio_site"          # the repository name; use "" for a user site (username.github.io) or a custom domain
 
 markdown: kramdown
 kramdown:
