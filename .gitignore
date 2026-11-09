@@ -1,0 +1,10 @@
+_site/
+.jekyll-cache/
+.sass-cache/
+Gemfile.lock
+*.zip
+node_modules/
+.DS_Store
+# keep the Blender source file out of the repo if you like:
+# *.blend
+# *.blend1

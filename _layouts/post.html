@@ -1,0 +1,20 @@
+---
+layout: default
+---
+<article class="post wrap">
+  <a class="back" href="{{ '/blog/' | relative_url }}">&larr; All posts</a>
+  <header class="post-head">
+    <p class="meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+      {% for tag in page.tags %}<span class="tag">{{ tag }}</span>{% endfor %}
+    </p>
+    <h1>{{ page.title }}</h1>
+    {% if page.description %}<p class="lead">{{ page.description }}</p>{% endif %}
+  </header>
+  <div class="prose">
+    {{ content }}
+  </div>
+  <footer class="post-foot">
+    <a class="btn btn-dark" href="{{ '/blog/' | relative_url }}">All posts <span class="arrow">[ &rarr; ]</span></a>
+  </footer>
+</article>

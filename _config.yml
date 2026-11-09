@@ -1,0 +1,28 @@
+# Same setup as github.com/efive-dev/portfolio: a Jekyll site that GitHub Pages builds straight from the branch
+# (Settings > Pages > "Deploy from a branch" > main / root). No Actions workflow needed.
+title: "Edoardo Quinto"
+description: "Portfolio"
+baseurl: "/portfolio"          # the repository name; use "" for a user site (username.github.io) or a custom domain
+
+markdown: kramdown
+kramdown:
+  syntax_highlighter: rouge
+
+# /blog/2026/09/23/Hello_world/
+permalink: /blog/:year/:month/:day/:title/
+future: true                   # publish posts even if their date is in the future
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - "*.zip"
+  - blender
+  - node_modules

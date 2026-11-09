@@ -1,0 +1,189 @@
+---
+layout: default
+title: Edoardo Quinto | Systems programmer
+description: Portfolio of Edoardo Quinto, a systems software engineer.
+room: true
+---
+
+<!-- HERO: the 3D room, nothing else in the middle -->
+<section id="home" class="hero" aria-label="Home">
+  <h1 class="sr-only">Edoardo Quinto, systems programmer</h1>
+
+  <div class="stage">
+    <canvas id="scene" aria-label="Interactive 3D room. Click an object, or use the menu, to open a section."></canvas>
+  </div>
+  <div class="frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div id="markers"></div>
+
+  <div class="wrap hero-bottom">
+    <div class="hero-copy">
+      <p class="status"><span class="dot" aria-hidden="true"></span>Open to systems roles, from embedded to kernel</p>
+      <p>Systems programmer. Working on operating system internals, memory allocators, network stacks and the performance critical code underneath everything else.</p>
+    </div>
+    <a class="btn btn-orange" href="#work" data-nav="work">View my work <span class="arrow">[ &rarr; ]</span></a>
+  </div>
+
+  <p class="copyright">&copy; {{ 'now' | date: "%Y" }} Edoardo Quinto</p>
+
+  <div id="loader" class="loader" role="status"><div class="bar"><i></i></div><p>Loading room</p></div>
+  <div id="toast" class="toast" role="status"></div>
+  <div id="tip" class="tip" aria-hidden="true"></div>
+</section>
+
+<!-- CONTENT: real HTML (readable without JavaScript). With JavaScript each block opens as a panel. -->
+<div id="content" class="content">
+
+  <section id="about" class="doc" data-title="About">
+    <p class="eyebrow">About</p>
+    <h2>I write the code your code runs on.</h2>
+    <p class="lead">I like to work close to the metal: kernels, embedded systems, network stacks and the runtime code that everything else builds upon. I’m interested in software optimization, edge AI applications and runtime virtualization.</p>
+
+{% highlight c %}
+void *alloc(Arena *a, int n) {
+  n = align16(n);
+  if (a->at + n > a->cap)
+    return NULL;
+  void *p = a->base + a->at;
+  a->at += n;
+  return p;
+}
+{% endhighlight %}
+
+    <dl class="facts">
+      <div><dt>Looking for</dt><dd>Early career or internship in system software.</dd></div>
+      <div><dt>Education</dt><dd>Bachelor degree in Computer Science.</dd></div>
+      <div><dt>Area of interest</dt><dd>Kernel, runtime, embedded and performance engineering.</dd></div>
+    </dl>
+
+    <h3>What I work in, and where I use it.</h3>
+    <ul class="skills">
+      <li><strong>C</strong><span>Kernels, drivers and anything that talks to hardware.</span></li>
+      <li><strong>Rust (learning)</strong><span>Memory safe systems code.</span></li>
+      <li><strong>C++ (basics)</strong><span>Latency sensitive systems.</span></li>
+      <li><strong>Go and Python</strong><span>Infrastructure and web services.</span></li>
+      <li><strong>Linux</strong><span>From embedded Linux to its internals.</span></li>
+    </ul>
+  </section>
+
+  <section id="work" class="doc" data-title="Work">
+    <p class="eyebrow">Work</p>
+    <h2>Selected work</h2>
+    <p class="lead">Three projects I actually shipped, from an edge-AI scheduler to a finance tracker with a JWT API.</p>
+
+    <article class="project">
+      <p class="kicker">Edge AI inference scheduler</p>
+      <h3>EdgeSched</h3>
+      <p>A inference scheduler designed to efficiently distribute object detection workloads across multiple NVIDIA Jetson inference engines. The system combines a Go based control plane with C++/TensorRT inference engines, using load and thermal aware routing, resource monitoring, and gRPC communication to optimize latency, throughput.</p>
+      <ul class="tags"><li>Go</li><li>C++</li><li>gRPC</li><li>TensorRT</li></ul>
+      <a class="link" href="https://github.com/efive-dev/EdgeSched" target="_blank" rel="noopener">View on GitHub <span class="arrow">[ &rarr; ]</span></a>
+      <div class="mock mock-route" aria-hidden="true">
+        <span class="cap">thermal-aware routing</span>
+        <div><b style="--w:64%"></b><em>engine-a queue</em></div>
+        <div><b style="--w:36%"></b><em>engine-b queue</em></div>
+      </div>
+    </article>
+
+    <article class="project">
+      <p class="kicker">Embedded sensing</p>
+      <h3>TempIntelligente</h3>
+      <p>Embedded sensing system built for the BBC micro:bit v2 (nRF52833) that continuously reads temperature and motion data, broadcasts them over Bluetooth Low Energy, and feeds a live terminal dashboard.</p>
+      <ul class="tags"><li>C</li><li>Zephyr</li><li>Python</li><li>BLE</li></ul>
+      <a class="link" href="https://github.com/efive-dev/TempIntelligente" target="_blank" rel="noopener">View on GitHub <span class="arrow">[ &rarr; ]</span></a>
+{% highlight text %}
+ble connected → TempSensor
+temp    raw 24.3°C   holt 24.6°C
+motion  •    shock  ·
+battery 82%
+anomaly none in last 200 samples
+{% endhighlight %}
+    </article>
+
+    <article class="project">
+      <p class="kicker">Personal finance manager</p>
+      <h3>QuattriniTrack</h3>
+      <p>A Go finance tracker with a JWT protected REST API and a terminal UI, using SQLC for type safe SQLite queries.</p>
+      <ul class="tags"><li>Go</li><li>SQLite</li><li>JWT</li><li>TUI</li></ul>
+      <a class="link" href="https://github.com/efive-dev/QuattriniTrack" target="_blank" rel="noopener">View on GitHub <span class="arrow">[ &rarr; ]</span></a>
+      <div class="mock mock-bars" aria-hidden="true">
+        <span class="cap">spending by category</span>
+        <div><b style="--w:100%"></b><em>rent</em><i>€820</i></div>
+        <div><b style="--w:62%"></b><em>food</em><i>€510</i></div>
+        <div><b style="--w:35%"></b><em>transport</em><i>€286</i></div>
+        <div><b style="--w:19%"></b><em>subscriptions</em><i>€158</i></div>
+        <code>POST /transaction<br>Authorization: Bearer •••••••••</code>
+      </div>
+    </article>
+  </section>
+
+  <section id="experience" class="doc" data-title="Career">
+    <p class="eyebrow">Career</p>
+    <h2>Early in my career: building, shipping and learning fast.</h2>
+
+    <article class="job">
+      <header>
+        <h3>Leonardo S.P.A.</h3>
+        <span class="period">May 2026 to August 2026</span>
+      </header>
+      <p class="role">Embedded Software Engineer Intern - Containerization</p>
+      <p>Investigated the feasibility of containerizing embedded AI workloads on an AMD Zynq SoC, using YOLO object detection pipelines accelerated by FPGA hardware. Redesigned and deployed the application on evaluation hardware, then benchmarked native and containerized implementations across execution time, latency, resource usage, robustness and cybersecurity. Evaluated embedded container platforms and analyzed the system level impact of containerization.</p>
+    </article>
+  </section>
+
+  <section id="contact" class="doc" data-title="Contact">
+    <p class="eyebrow">Contact</p>
+    <h2>Let’s write code close to the metal.</h2>
+    <p class="lead">I’m looking for systems roles in kernel, runtime, embedded and performance engineering. I try to reply within two working days.</p>
+    <ul class="links">
+      <li><a href="mailto:edoardo.quinto.dev@gmail.com"><span>Email me</span><code>edoardo.quinto.dev@gmail.com</code></a></li>
+      <li><a href="https://github.com/efive-dev" target="_blank" rel="noopener"><span>GitHub</span><code>github.com/efive-dev</code></a></li>
+      <li><a href="https://www.linkedin.com/in/edoardo-quinto/" target="_blank" rel="noopener"><span>LinkedIn</span><code>linkedin.com/in/edoardo-quinto</code></a></li>
+    </ul>
+  </section>
+</div>
+
+<!-- Side panel for About / Work / Career / Contact -->
+<aside id="panel" class="panel" aria-hidden="true" aria-live="polite">
+  <button id="panel-close" type="button" class="close" aria-label="Close">[ &times; ]</button>
+  <div id="panel-body" class="doc"></div>
+</aside>
+
+<!-- BLOG: opens big, history on the left, the selected post on the right -->
+<div id="reader" class="reader" role="dialog" aria-modal="true" aria-label="Blog" aria-hidden="true" data-view="post">
+  <div class="reader-frame">
+    <i class="c tl"></i><i class="c tr"></i><i class="c bl"></i><i class="c br"></i>
+    <header class="reader-top">
+      <p class="eyebrow">Blog</p>
+      <div class="reader-tools">
+        <a class="reader-page" href="{{ '/blog/' | relative_url }}">Open as page</a>
+        <button id="reader-close" type="button" class="close" aria-label="Close blog">[ &times; ]</button>
+      </div>
+    </header>
+    <div class="reader-body">
+      <aside class="reader-list" aria-label="Post history">
+        <h2>History</h2>
+        <ol id="reader-items"></ol>
+      </aside>
+      <article id="reader-article" class="reader-article" tabindex="-1"></article>
+    </div>
+  </div>
+</div>
+
+<!-- Data for the monitor and the LED matrix in the room (plain JSON, edit freely) -->
+<script type="application/json" id="room-config">
+{
+  "terminalTitle": "tty0 - edoardo@room",
+  "terminal": [
+    "$ whoami",
+    "edoardo quinto - systems programmer",
+    "$ cat interests.txt",
+    "kernel, runtime, embedded,",
+    "performance engineering",
+    "$ ls ~/projects",
+    "EdgeSched  TempIntelligente  QuattriniTrack",
+    "$ make -j && ./run_tests",
+    "ok  all tests passed",
+    "$ _"
+  ],
+  "matrixText": "STAY SYSTEMS!"
+}
+</script>
