@@ -49,7 +49,7 @@ const DEFAULT_MANIFEST = {
 
 // ---------------------------------------------------------------- shared state
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(28, 1, 0.1, 400);
+const camera = new THREE.PerspectiveCamera(28, 1, 1, 220);   // near/far kept tight: depth precision = no flicker on close surfaces
 let renderer, composer = null, bloomPass = null, controls, canvas;
 let manifest = DEFAULT_MANIFEST;
 let baked = false;
@@ -258,6 +258,9 @@ function styleScreen(m) {
   }
   m.userData.noHighlight = true;
   m.envMapIntensity = 0;
+  m.polygonOffset = true;                // screens are decals on their housing: pull them slightly towards the camera
+  m.polygonOffsetFactor = -2;
+  m.polygonOffsetUnits = -2;
 }
 
 function styleLiveMaterial(m) {          // live (unbaked) preview only: rebuild the look from the material name
@@ -277,6 +280,9 @@ function styleLiveMaterial(m) {          // live (unbaked) preview only: rebuild
 
 function makeBakedMaterial(dayTex) {
   const mat = new THREE.MeshBasicMaterial({ map: dayTex });
+  mat.polygonOffset = true;
+  mat.polygonOffsetFactor = 1;
+  mat.polygonOffsetUnits = 1;
   mat.color.setScalar(bakedGain);                                // the atlas was baked at reduced light so it does not clip
   mat.onBeforeCompile = (shader) => {                            // cross-fade between the day and the night atlas
     shader.uniforms.uMap2 = bakeUniforms.uMap2;
@@ -369,6 +375,7 @@ async function loadAll(base, onProgress) {
       if (mats.some((m) => SCREEN_MATS.has(m.name))) {         // animated screens stay live
         const m = mats[0];
         if (!seen.has(m)) { seen.add(m); styleScreen(m); liveMats.push(m); }
+        o.renderOrder = 2;
         return;
       }
       o.material = bakedBySection[o.userData.section] || bakedShared;

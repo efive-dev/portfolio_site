@@ -143,7 +143,17 @@ anomaly none in last 200 samples
 
 <!-- Side panel for About / Work / Career / Contact -->
 <aside id="panel" class="panel" aria-hidden="true" aria-live="polite">
-  <button id="panel-close" type="button" class="close" aria-label="Close">[ &times; ]</button>
+  <div class="panel-top">
+    <button id="panel-close" type="button" class="close" aria-label="Back to the room"><span class="x">[ &times; ]</span><span class="bk">&larr; Home</span></button>
+    <nav class="panel-nav" aria-label="Sections">
+      <a href="{{ '/#about' | relative_url }}" data-nav="about">About</a>
+      <a href="{{ '/#work' | relative_url }}" data-nav="work">Work</a>
+      <a href="{{ '/#experience' | relative_url }}" data-nav="experience">Career</a>
+      <a href="{{ '/blog/' | relative_url }}" data-nav="blog">Blog</a>
+      <a href="{{ '/#contact' | relative_url }}" data-nav="contact">Contact</a>
+    </nav>
+    <button type="button" class="theme" aria-label="Toggle day and night" aria-pressed="false"><span></span></button>
+  </div>
   <div id="panel-body" class="doc"></div>
 </aside>
 
@@ -155,6 +165,7 @@ anomaly none in last 200 samples
       <p class="eyebrow">Blog</p>
       <div class="reader-tools">
         <a class="reader-page" href="{{ '/blog/' | relative_url }}">Open as page</a>
+        <button type="button" class="theme" aria-label="Toggle day and night" aria-pressed="false"><span></span></button>
         <button id="reader-close" type="button" class="close" aria-label="Close blog">[ &times; ]</button>
       </div>
     </header>

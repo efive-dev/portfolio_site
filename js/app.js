@@ -29,9 +29,22 @@ const themeName = () => (root.getAttribute('data-theme') === 'day' ? 'day' : 'ni
 function setTheme(name, instant = false) {
   root.setAttribute('data-theme', name);
   try { localStorage.setItem('theme', name); } catch (e) { /* private mode */ }
-  $('#theme').setAttribute('aria-pressed', name === 'night');
+  $$('.theme').forEach((b) => b.setAttribute('aria-pressed', name === 'night'));
+  const meta = $('meta[name="theme-color"]');
+  if (meta) meta.setAttribute('content', name === 'night' ? '#000000' : '#efece5');
   if (room) room.setTheme(name, instant);
 }
+
+// small screens: sections open as a FULL page (no half room / half text)
+const small = matchMedia('(max-width: 900px)');
+const isSmall = () => small.matches;
+let panelOpen = false;
+let pauseTimer = null;
+function schedulePause() {                                  // stop drawing the room while a full-page view covers it
+  clearTimeout(pauseTimer);
+  pauseTimer = setTimeout(() => { if (room) room.setPaused(readerOpen || (panelOpen && isSmall())); }, 750);
+}
+function resumeRoom() { clearTimeout(pauseTimer); if (room) room.setPaused(false); }
 
 // ---------------------------------------------------------------- side panel
 function openPanel(key) {
@@ -42,13 +55,17 @@ function openPanel(key) {
   p.classList.add('open');
   p.setAttribute('aria-hidden', 'false');
   p.scrollTop = 0;
-  if (room) room.setViewShift(innerWidth > 900 ? Math.min(560, innerWidth * 0.5) / 2 : 0);
+  panelOpen = true;
+  if (room) room.setViewShift(isSmall() ? 0 : Math.min(560, innerWidth * 0.5) / 2);
+  if (isSmall()) schedulePause();
 }
 function closePanel() {
   const p = $('#panel');
   p.classList.remove('open');
   p.setAttribute('aria-hidden', 'true');
+  panelOpen = false;
   if (room) room.setViewShift(0);
+  resumeRoom();
 }
 
 // ---------------------------------------------------------------- blog reader (big screen)
@@ -100,11 +117,11 @@ async function openReader(slug) {
   const reader = $('#reader');
   renderList();
   selectPost(slug || (list[0] && list[0].slug), false);
-  if (!slug && innerWidth <= 900) reader.dataset.view = 'list';        // phones: show the history first
+  if (!slug && isSmall()) reader.dataset.view = 'list';                // phones: show the history first
   reader.classList.add('open');
   reader.setAttribute('aria-hidden', 'false');
   readerOpen = true;
-  if (room) { room.focus('blog'); setTimeout(() => { if (readerOpen) room.setPaused(true); }, 700); }
+  if (room) { room.focus('blog'); schedulePause(); }
   $('#reader-close').focus({ preventScroll: true });
 }
 function closeReader() {
@@ -113,7 +130,7 @@ function closeReader() {
   reader.classList.remove('open');
   reader.setAttribute('aria-hidden', 'true');
   readerOpen = false;
-  if (room) room.setPaused(false);
+  resumeRoom();
 }
 
 // ---------------------------------------------------------------- routing
@@ -150,7 +167,7 @@ function routeFromHash() {
 }
 
 function updateNav() {
-  $$('.nav a').forEach((a) => (a.dataset.nav === current ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
+  $$('.nav a, .panel-nav a').forEach((a) => (a.dataset.nav === current ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current')));
 }
 
 // ---------------------------------------------------------------- room callbacks
@@ -208,7 +225,7 @@ function bindUI() {
       a.addEventListener('pointerleave', () => { if (room) room.setHover(null); });
     }
   });
-  $('#theme').addEventListener('click', () => setTheme(themeName() === 'night' ? 'day' : 'night'));
+  $$('.theme').forEach((b) => b.addEventListener('click', () => setTheme(themeName() === 'night' ? 'day' : 'night')));
   $('#panel-close').addEventListener('click', () => go('home'));
   $('#reader-close').addEventListener('click', () => go('home'));
   $('#reader').addEventListener('click', (e) => { if (e.target === $('#reader')) go('home'); });
